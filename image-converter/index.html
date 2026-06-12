@@ -1,2 +1,461 @@
 <!DOCTYPE html>
-<html><body><h1>Coming soon</h1></body></html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Image Converter — Convert HEIC, JPG, PNG, WEBP, AVIF, PDF and 18 more formats. 100% on-device. Your files never leave your phone."/>
+  <title>Image Converter: JPG HEIC PDF — Formatly</title>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg0: #060E1A;
+      --bg1: #091425;
+      --bg2: #0D1F3C;
+      --bg3: #162744;
+      --accent: #1A73E8;
+      --accent2: #4A9FFF;
+      --text-primary: #FFFFFF;
+      --text-secondary: #8899AA;
+      --text-dim: #445566;
+      --border: #1C3F78;
+      --green: #34A853;
+      --gold: #F5C518;
+      --red: #E65100;
+      --purple: #6A1B9A;
+      --teal: #00695C;
+      --amber: #F57F17;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg0); color: var(--text-primary);
+      min-height: 100vh; overflow-x: hidden;
+    }
+    body::before {
+      content: ''; position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 0; opacity: 0.4;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(6,14,26,0.85); backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(28,63,120,0.5);
+      padding: 0 40px; height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo { font-size: 18px; font-weight: 900; color: var(--text-primary); text-decoration: none; }
+    .nav-logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 28px; list-style: none; align-items: center; }
+    .nav-links a { font-size: 14px; font-weight: 500; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--text-primary); }
+    .nav-back { font-size: 13px; color: var(--text-secondary); text-decoration: none; display: flex; align-items: center; gap: 6px; transition: color 0.2s; }
+    .nav-back:hover { color: var(--text-primary); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center; padding: 120px 24px 80px;
+      position: relative; overflow: hidden;
+    }
+    .hero-glow {
+      position: absolute; top: -200px; left: 50%; transform: translateX(-50%);
+      width: 800px; height: 800px;
+      background: radial-gradient(ellipse, rgba(26,115,232,0.13) 0%, transparent 65%);
+      pointer-events: none; animation: pulse 6s ease-in-out infinite;
+    }
+    .hero-dot-grid {
+      position: absolute; inset: 0;
+      background-image: radial-gradient(circle, rgba(26,115,232,0.14) 1px, transparent 1px);
+      background-size: 40px 40px;
+      mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, black, transparent);
+      pointer-events: none;
+    }
+    @keyframes pulse { 0%,100%{opacity:0.6;transform:translateX(-50%) scale(1)} 50%{opacity:1;transform:translateX(-50%) scale(1.08)} }
+    .hero-content { position: relative; z-index: 1; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(26,115,232,0.1); border: 1px solid rgba(26,115,232,0.3);
+      border-radius: 100px; padding: 6px 16px;
+      font-size: 12px; font-weight: 700; letter-spacing: 1px;
+      text-transform: uppercase; color: var(--accent2); margin-bottom: 28px;
+      animation: fade-up 0.6s ease both;
+    }
+    .hero-badge::before {
+      content: ''; width: 6px; height: 6px; background: var(--green);
+      border-radius: 50%; box-shadow: 0 0 8px var(--green);
+      animation: blink 2s ease-in-out infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    .hero h1 {
+      font-size: clamp(40px, 8vw, 72px); font-weight: 900;
+      line-height: 1.05; letter-spacing: -2.5px; margin-bottom: 24px;
+      animation: fade-up 0.6s 0.1s ease both;
+    }
+    .hero h1 span { background: linear-gradient(135deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .hero-sub {
+      font-size: clamp(16px, 2.5vw, 19px); color: var(--text-secondary);
+      max-width: 500px; line-height: 1.75; margin: 0 auto 44px;
+      animation: fade-up 0.6s 0.2s ease both;
+    }
+    .hero-cta { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; animation: fade-up 0.6s 0.3s ease both; }
+    @keyframes fade-up { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: linear-gradient(135deg, var(--accent), #1558B8);
+      color: white; text-decoration: none; padding: 14px 28px;
+      border-radius: 12px; font-size: 15px; font-weight: 600;
+      box-shadow: 0 8px 32px rgba(26,115,232,0.35);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(26,115,232,0.45); }
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,0.04); color: var(--text-primary);
+      text-decoration: none; padding: 14px 28px; border-radius: 12px;
+      font-size: 15px; font-weight: 600; border: 1px solid rgba(255,255,255,0.1);
+      transition: background 0.2s, transform 0.2s;
+    }
+    .btn-secondary:hover { background: rgba(255,255,255,0.08); transform: translateY(-2px); }
+
+    /* TRUST STRIP */
+    .trust-strip {
+      display: flex; gap: 32px; justify-content: center; flex-wrap: wrap;
+      margin-top: 64px; padding-top: 48px;
+      border-top: 1px solid var(--border);
+      animation: fade-up 0.6s 0.5s ease both;
+    }
+    .trust-item { display: flex; align-items: center; gap: 10px; }
+    .trust-icon { font-size: 20px; }
+    .trust-text { font-size: 13px; font-weight: 600; color: var(--text-secondary); }
+    .trust-text strong { color: var(--text-primary); }
+
+    /* SECTION */
+    .section { padding: 100px 24px; max-width: 960px; margin: 0 auto; position: relative; }
+    .section-label {
+      font-size: 11px; font-weight: 700; letter-spacing: 2.5px;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 16px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .section-label::before { content: ''; width: 24px; height: 1px; background: var(--accent); }
+    .section-title { font-size: clamp(28px, 5vw, 44px); font-weight: 900; letter-spacing: -1.5px; line-height: 1.08; margin-bottom: 14px; }
+    .section-subtitle { font-size: 17px; color: var(--text-secondary); line-height: 1.75; max-width: 520px; margin-bottom: 52px; }
+    .divider { width: 100%; height: 1px; background: linear-gradient(90deg, transparent, var(--border), transparent); max-width: 960px; margin: 0 auto; }
+
+    /* FORMATS GRID */
+    .formats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 12px; }
+    .format-card {
+      background: var(--bg1); border: 1px solid var(--border);
+      border-radius: 12px; padding: 16px 12px; text-align: center;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .format-card:hover { border-color: rgba(26,115,232,0.4); transform: translateY(-2px); }
+    .format-emoji { font-size: 22px; margin-bottom: 8px; }
+    .format-name { font-size: 12px; font-weight: 700; color: var(--text-primary); }
+    .format-type { font-size: 10px; color: var(--text-secondary); margin-top: 2px; }
+
+    /* FEATURES */
+    .features-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
+    .feature-card {
+      background: var(--bg1); border: 1px solid var(--border);
+      border-radius: 16px; padding: 24px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .feature-card:hover { border-color: rgba(26,115,232,0.4); transform: translateY(-3px); }
+    .feature-icon { width: 44px; height: 44px; border-radius: 12px; background: var(--bg2); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 16px; }
+    .feature-title { font-size: 15px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.2px; }
+    .feature-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.7; }
+
+    /* PRICING */
+    .pricing-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; max-width: 680px; }
+    .price-card {
+      background: var(--bg1); border: 1px solid var(--border);
+      border-radius: 20px; padding: 28px; position: relative; overflow: hidden;
+    }
+    .price-card.featured {
+      border-color: rgba(26,115,232,0.6);
+      box-shadow: 0 0 32px rgba(26,115,232,0.15);
+      background: linear-gradient(135deg, var(--bg1), var(--bg2));
+    }
+    .price-badge {
+      position: absolute; top: 16px; right: 16px;
+      background: linear-gradient(135deg, #D4AF37, #F5C518);
+      color: #000; font-size: 11px; font-weight: 800;
+      padding: 4px 10px; border-radius: 100px;
+    }
+    .price-label { font-size: 13px; font-weight: 600; color: var(--text-secondary); margin-bottom: 8px; }
+    .price-amount { font-size: 36px; font-weight: 900; letter-spacing: -1.5px; margin-bottom: 4px; }
+    .price-period { font-size: 13px; color: var(--text-secondary); margin-bottom: 4px; }
+    .price-equiv { font-size: 13px; color: var(--accent2); font-weight: 600; margin-bottom: 20px; }
+    .price-trial { display: inline-flex; align-items: center; gap: 6px; background: rgba(52,168,83,0.1); border: 1px solid rgba(52,168,83,0.25); border-radius: 100px; padding: 4px 12px; font-size: 12px; font-weight: 600; color: var(--green); margin-bottom: 20px; }
+    .price-features { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .price-features li { font-size: 13px; color: var(--text-secondary); display: flex; align-items: center; gap: 8px; }
+    .price-features li::before { content: '✓'; color: var(--green); font-weight: 700; font-size: 14px; }
+    .free-tag { display: inline-block; background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 4px 10px; font-size: 11px; font-weight: 700; color: var(--text-secondary); margin-bottom: 12px; }
+
+    /* SCROLL REVEAL */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border); padding: 36px 40px;
+      max-width: 960px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;
+    }
+    .footer-logo { font-size: 16px; font-weight: 900; color: var(--text-primary); text-decoration: none; }
+    .footer-logo span { color: var(--accent); }
+    .footer-links { display: flex; gap: 24px; list-style: none; }
+    .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--text-primary); }
+    .footer-copy { font-size: 13px; color: var(--text-dim); }
+
+    @media (max-width: 768px) {
+      nav { padding: 0 20px; }
+      .nav-links li:not(:last-child) { display: none; }
+      .trust-strip { gap: 20px; }
+      footer { padding: 32px 20px; flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="../index.html" class="nav-back">← Formatly<span style="color:var(--accent)">.</span></a>
+  <ul class="nav-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#formats">Formats</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#" class="btn-primary" style="padding:8px 18px;font-size:13px;">Get on Google Play</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-dot-grid"></div>
+  <div class="hero-content">
+    <div class="hero-badge">Available on Android</div>
+    <h1>Every image format.<br><span>One app.</span></h1>
+    <p class="hero-sub">Convert HEIC, JPG, PNG, WEBP, AVIF, RAW and 18 more formats instantly. 100% on-device — your files never leave your phone.</p>
+    <div class="hero-cta">
+      <a href="#" class="btn-primary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M3 20.5v-17c0-.83.94-1.3 1.6-.8l14 8.5c.6.36.6 1.24 0 1.6l-14 8.5c-.66.5-1.6.03-1.6-.8z"/></svg>
+        Download on Google Play
+      </a>
+      <a href="#features" class="btn-secondary">See features →</a>
+    </div>
+    <div class="trust-strip">
+      <div class="trust-item">
+        <span class="trust-icon">🔒</span>
+        <span class="trust-text"><strong>100% Private</strong> — no uploads</span>
+      </div>
+      <div class="trust-item">
+        <span class="trust-icon">⚡</span>
+        <span class="trust-text"><strong>Instant</strong> — on-device processing</span>
+      </div>
+      <div class="trust-item">
+        <span class="trust-icon">📁</span>
+        <span class="trust-text"><strong>24 formats</strong> — all free</span>
+      </div>
+      <div class="trust-item">
+        <span class="trust-icon">🚫</span>
+        <span class="trust-text"><strong>No watermarks</strong> — ever</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<section class="section" id="features">
+  <div class="section-label reveal">Features</div>
+  <h2 class="section-title reveal reveal-delay-1">Everything you need.<br>Nothing you don't.</h2>
+  <p class="section-subtitle reveal reveal-delay-2">Built for the moment you need to convert a file right now — not in five minutes after uploading to some server.</p>
+  <div class="features-grid">
+    <div class="feature-card reveal reveal-delay-1">
+      <div class="feature-icon">🔒</div>
+      <div class="feature-title">100% On-Device</div>
+      <p class="feature-desc">Every conversion happens locally on your phone. No internet required. No server uploads. Your files never leave your device.</p>
+    </div>
+    <div class="feature-card reveal reveal-delay-2">
+      <div class="feature-icon">📸</div>
+      <div class="feature-title">HEIC from iPhone</div>
+      <p class="feature-desc">Convert iPhone HEIC photos to JPG, PNG, or WEBP instantly. Share them anywhere without compatibility issues.</p>
+    </div>
+    <div class="feature-card reveal reveal-delay-3">
+      <div class="feature-icon">🖼️</div>
+      <div class="feature-title">Batch Convert</div>
+      <p class="feature-desc">Select multiple files and convert them all at once. No limit on batch size. Free users convert 5 files at a time.</p>
+    </div>
+    <div class="feature-card reveal reveal-delay-4">
+      <div class="feature-icon">📄</div>
+      <div class="feature-title">Images to PDF</div>
+      <p class="feature-desc">Combine multiple photos into a single PDF or extract every page from a PDF as individual images.</p>
+    </div>
+    <div class="feature-card reveal reveal-delay-1">
+      <div class="feature-icon">📷</div>
+      <div class="feature-title">RAW Camera Files</div>
+      <p class="feature-desc">Convert RAW files from Canon, Nikon, Sony, Fuji and more. DNG, CR2, NEF, ARW, RAF — all supported.</p>
+    </div>
+    <div class="feature-card reveal reveal-delay-2">
+      <div class="feature-icon">📝</div>
+      <div class="feature-title">Image to Word</div>
+      <p class="feature-desc">Extract text from any image using built-in OCR and export it as an editable Word document.</p>
+    </div>
+    <div class="feature-card reveal reveal-delay-3">
+      <div class="feature-icon">⚡</div>
+      <div class="feature-title">Instant Results</div>
+      <p class="feature-desc">No waiting for uploads or downloads. On-device processing means your file is ready in seconds.</p>
+    </div>
+    <div class="feature-card reveal reveal-delay-4">
+      <div class="feature-icon">🚫</div>
+      <div class="feature-title">No Watermarks</div>
+      <p class="feature-desc">Every conversion on free and Pro is completely watermark-free. What you convert is what you get.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- FORMATS -->
+<section class="section" id="formats">
+  <div class="section-label reveal">Formats</div>
+  <h2 class="section-title reveal reveal-delay-1">24 formats supported</h2>
+  <p class="section-subtitle reveal reveal-delay-2">Every format is available on both free and Pro. Nothing is locked behind a paywall.</p>
+
+  <div style="margin-bottom:32px;">
+    <div class="section-label reveal" style="font-size:10px;margin-bottom:16px;">Image formats</div>
+    <div class="formats-grid reveal reveal-delay-1">
+      <div class="format-card"><div class="format-emoji">🟠</div><div class="format-name">HEIC</div><div class="format-type">iPhone</div></div>
+      <div class="format-card"><div class="format-emoji">🔴</div><div class="format-name">JPG</div><div class="format-type">Photo</div></div>
+      <div class="format-card"><div class="format-emoji">🟢</div><div class="format-name">PNG</div><div class="format-type">Lossless</div></div>
+      <div class="format-card"><div class="format-emoji">🔵</div><div class="format-name">WEBP</div><div class="format-type">Web</div></div>
+      <div class="format-card"><div class="format-emoji">🩵</div><div class="format-name">AVIF</div><div class="format-type">Modern</div></div>
+      <div class="format-card"><div class="format-emoji">🟡</div><div class="format-name">GIF</div><div class="format-type">Animated</div></div>
+      <div class="format-card"><div class="format-emoji">⬜</div><div class="format-name">BMP</div><div class="format-type">Bitmap</div></div>
+      <div class="format-card"><div class="format-emoji">🟣</div><div class="format-name">TIFF</div><div class="format-type">Print</div></div>
+      <div class="format-card"><div class="format-emoji">🩷</div><div class="format-name">SVG</div><div class="format-type">Vector</div></div>
+      <div class="format-card"><div class="format-emoji">⬛</div><div class="format-name">ICO</div><div class="format-type">Favicon</div></div>
+      <div class="format-card"><div class="format-emoji">🔷</div><div class="format-name">APNG</div><div class="format-type">Animated</div></div>
+      <div class="format-card"><div class="format-emoji">🟤</div><div class="format-name">TGA</div><div class="format-type">Legacy</div></div>
+    </div>
+  </div>
+
+  <div style="margin-bottom:32px;">
+    <div class="section-label reveal" style="font-size:10px;margin-bottom:16px;">Document formats</div>
+    <div class="formats-grid reveal reveal-delay-1" style="grid-template-columns:repeat(auto-fill,minmax(100px,1fr))">
+      <div class="format-card"><div class="format-emoji">🔵</div><div class="format-name">PDF</div><div class="format-type">Document</div></div>
+      <div class="format-card"><div class="format-emoji">🔷</div><div class="format-name">DOCX</div><div class="format-type">Word</div></div>
+    </div>
+  </div>
+
+  <div>
+    <div class="section-label reveal" style="font-size:10px;margin-bottom:16px;">RAW camera formats</div>
+    <div class="formats-grid reveal reveal-delay-1">
+      <div class="format-card"><div class="format-emoji">📷</div><div class="format-name">DNG</div><div class="format-type">Adobe</div></div>
+      <div class="format-card"><div class="format-emoji">📷</div><div class="format-name">CR2</div><div class="format-type">Canon</div></div>
+      <div class="format-card"><div class="format-emoji">📷</div><div class="format-name">CR3</div><div class="format-type">Canon</div></div>
+      <div class="format-card"><div class="format-emoji">📷</div><div class="format-name">NEF</div><div class="format-type">Nikon</div></div>
+      <div class="format-card"><div class="format-emoji">📷</div><div class="format-name">ARW</div><div class="format-type">Sony</div></div>
+      <div class="format-card"><div class="format-emoji">📷</div><div class="format-name">RAF</div><div class="format-type">Fuji</div></div>
+      <div class="format-card"><div class="format-emoji">📷</div><div class="format-name">ORF</div><div class="format-type">Olympus</div></div>
+      <div class="format-card"><div class="format-emoji">📷</div><div class="format-name">RW2</div><div class="format-type">Panasonic</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PRICING -->
+<section class="section" id="pricing">
+  <div class="section-label reveal">Pricing</div>
+  <h2 class="section-title reveal reveal-delay-1">Free to start.<br>Pro when you need more.</h2>
+  <p class="section-subtitle reveal reveal-delay-2">Every format available on free and Pro. Upgrade for unlimited conversions and no ads.</p>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;max-width:680px;" class="reveal reveal-delay-3">
+
+    <!-- Free -->
+    <div class="price-card">
+      <span class="free-tag">Free</span>
+      <div class="price-amount">$0</div>
+      <div class="price-period">forever</div>
+      <div style="height:20px;"></div>
+      <ul class="price-features">
+        <li>5 conversions per day</li>
+        <li>All 24 formats</li>
+        <li>Batch conversion</li>
+        <li>No watermarks</li>
+        <li>+3 bonus from rewarded ad</li>
+      </ul>
+    </div>
+
+    <!-- Pro -->
+    <div class="price-card featured">
+      <span class="price-badge">Save 87%</span>
+      <div class="price-label">Pro — Yearly</div>
+      <div class="price-amount">$19.99</div>
+      <div class="price-period">per year</div>
+      <div class="price-equiv">Just $0.38 / week</div>
+      <div class="price-trial">✓ 3-day free trial</div>
+      <ul class="price-features">
+        <li>Unlimited conversions</li>
+        <li>Unlimited batch</li>
+        <li>No ads ever</li>
+        <li>All 24 formats</li>
+        <li>Priority processing</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <p style="font-size:13px;color:var(--text-dim);margin-top:24px;" class="reveal reveal-delay-4">
+    Also available as weekly at $2.99/week. Cancel anytime. No commitment.
+  </p>
+</section>
+
+<div class="divider"></div>
+
+<!-- PRIVACY -->
+<section class="section">
+  <div style="background:linear-gradient(135deg,var(--bg1),var(--bg2));border:1px solid var(--border);border-radius:24px;padding:56px 48px;text-align:center;position:relative;overflow:hidden;" class="reveal">
+    <div style="position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:400px;height:400px;background:radial-gradient(ellipse,rgba(26,115,232,0.08) 0%,transparent 70%);pointer-events:none;"></div>
+    <div style="font-size:48px;margin-bottom:20px;position:relative;">🔒</div>
+    <h2 style="font-size:clamp(24px,4vw,36px);font-weight:900;letter-spacing:-1px;margin-bottom:16px;position:relative;">Your files never leave your phone</h2>
+    <p style="font-size:16px;color:var(--text-secondary);max-width:480px;margin:0 auto 36px;line-height:1.75;position:relative;">Unlike most converter apps that upload your files to a server, Image Converter processes everything locally. No internet required. No privacy risk. No data collected.</p>
+    <a href="#" class="btn-primary" style="position:relative;">Download Free →</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <a href="../index.html" class="footer-logo">Formatly<span>.</span></a>
+  <ul class="footer-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#formats">Formats</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="privacy-policy.html">Privacy Policy</a></li>
+    <li><a href="mailto:youssifahmed911business@gmail.com">Contact</a></li>
+  </ul>
+  <div class="footer-copy">© 2026 Formatly</div>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  const nav = document.querySelector('nav');
+  window.addEventListener('scroll', () => {
+    nav.style.background = window.scrollY > 40 ? 'rgba(6,14,26,0.97)' : 'rgba(6,14,26,0.85)';
+  });
+</script>
+
+</body>
+</html>
